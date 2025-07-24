@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Академия Красоты | Luxury Design</title>
+    
+    <!-- Подключение новых шрифтов -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Иконки Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* ========================================
+        ОСНОВНЫЕ СТИЛИ И ПЕРЕМЕННЫЕ
+        ========================================
+        */
+        :root {
+            --bg-color: #0F0F0F;
+            --primary-color: #141414;
+            --accent-color: #bda070; /* Матовое золото */
+            --text-color: #E5E5E5;
+            --text-color-muted: #666666;
+            --font-main: 'Inter', sans-serif;
+            --font-heading: 'Syne', sans-serif;
+            --border-radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            /* Начальная непрозрачность для плавной анимации появления */
+            opacity: 0; 
+            position: relative; /* Для позиционирования анимированного фона */
+        }
+
+        /* Стиль для анимированного фона */
+        #particles-js {
+            position: fixed; /* Фиксируем фон */
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1; /* Помещаем фон под основной контент */
+        }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* ========================================
+        ШАПКА САЙТА
+        ========================================
+        */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px 0;
+            z-index: 1000;
+            /* Начальное состояние для анимации появления */
+            transform: translateY(-100%);
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-family: var(--font-heading);
+            font-size: 24px;
+            font-weight: 800;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+        .logo i {
+            color: var(--accent-color);
+            margin-right: 12px;
+        }
+
+        /* Навигация для десктопа */
+        .main-nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        .main-nav ul li {
+            margin-left: 50px;
+        }
+
+        .main-nav ul li a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            position: relative;
+            padding-bottom: 8px;
+        }
+
+        .main-nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--accent-color);
+            transition: width 0.4s ease;
+        }
+
+        .main-nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        /* Переключатель мобильного меню */
+        .menu-toggle {
+            display: none; /* Скрыто по умолчанию на десктопе */
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1001; /* Выше мобильной навигации */
+        }
+
+        /* ========================================
+        ГЛАВНЫЙ ЭКРАН (HERO)
+        ========================================
+        */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding: 120px 0;
+        }
+        
+        /* Стили для анимации появления текста */
+        .hero-content h1 {
+            font-family: var(--font-heading);
+            font-size: clamp(3rem, 10vw, 9rem);
+            font-weight: 800;
+            line-height: 0.9;
+            text-transform: uppercase;
+            color: var(--text-color);
+            letter-spacing: -0.02em;
+        }
+        
+        .line {
+            overflow: hidden;
+            padding-bottom: 0.1em;
+        }
+        .line .word {
+            display: inline-block;
+            transform: translateY(110%); /* Начальное положение для анимации */
+        }
+
+        .hero-description {
+            max-width: 400px;
+            margin-top: 50px;
+            opacity: 0; /* Начальное состояние для анимации */
+        }
+        
+        .hero-description p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-color-muted);
+        }
+        
+        .cta-button {
+            display: inline-block;
+            color: var(--text-color);
+            padding: 14px 35px;
+            border: 1px solid var(--text-color-muted);
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden; /* Для эффекта заполнения */
+            transition: color 0.4s ease, border-color 0.4s ease;
+        }
+        .cta-button:hover {
+            color: var(--bg-color);
+            border-color: var(--accent-color);
+        }
+
+
+        /* ========================================
+        ОБЩИЕ СТИЛИ СЕКЦИЙ
+        ========================================
+        */
+        .section {
+            padding: 150px 0;
+            position: relative;
+        }
+        
+        .section-title {
+            margin-bottom: 80px;
+        }
+        
+        .section-title h2 {
+            font-family: var(--font-heading);
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--text-color);
+        }
+        
+        /* Класс для элементов, появляющихся при скролле */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        /* ========================================
+        СЕКЦИЯ TELEGRAM
+        ========================================
+        */
+        .telegram-section .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 100px;
+            align-items: center;
+        }
+        
+        .telegram-image-wrapper {
+            border-radius: var(--border-radius);
+            overflow: hidden; /* Чтобы скругление работало с масштабированием */
+        }
+
+        .telegram-image {
+            width: 100%;
+            height: 600px;
+            object-fit: cover;
+            border-radius: var(--border-radius);
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .telegram-image-wrapper:hover .telegram-image {
+            transform: scale(1.05);
+        }
+        
+        .telegram-content h3 {
+            font-family: var(--font-heading);
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 30px;
+        }
+        
+        .telegram-content p {
+            color: var(--text-color-muted);
+            line-height: 1.7;
+            font-size: 1.1rem;
+            max-width: 500px;
+            margin-bottom: 40px;
+        }
+        
+        /* ========================================
+        СЕКЦИЯ ГАЛЕРЕИ (ГОРИЗОНТАЛЬНЫЙ СКРОЛЛ)
+        ========================================
+        */
+        .gallery-section {
+            padding-top: 0;
+            padding-bottom: 0;
+            /* Добавляем верхний отступ, чтобы было видно начало секции */
+            margin-top: 150px; 
+        }
+        .gallery-wrapper {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            overflow: hidden; 
+        }
+        .gallery-horizontal {
+            display: flex;
+            gap: 20px; /* Уменьшенное расстояние */
+            padding-left: 10vw;
+        }
+        .gallery-item {
+            flex-shrink: 0;
+            width: 35vw; /* Уменьшенная ширина */
+            height: 60vh; /* Уменьшенная высота */
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            position: relative;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        /* ========================================
+        СЕКЦИЯ О НАС
+        ========================================
+        */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 100px;
+            align-items: center;
+        }
+        
+        .about-text p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--text-color);
+            margin-bottom: 30px;
+        }
+        
+        .about-text p strong {
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+        
+        .about-image-wrapper {
+             border-radius: var(--border-radius);
+             overflow: hidden;
+        }
+        .about-image {
+            width: 100%;
+            height: 700px;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .about-image-wrapper:hover .about-image {
+             transform: scale(1.05);
+        }
+
+        /* ========================================
+        ПОДВАЛ (FOOTER)
+        ========================================
+        */
+        footer {
+            padding: 100px 0;
+            position: relative;
+        }
+        .footer-content {
+            border-top: 1px solid var(--text-color-muted);
+            padding-top: 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap; /* Для адаптивности */
+            gap: 40px;
+        }
+        .footer-column { flex: 1; min-width: 220px; }
+        .footer-column h3 {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+        .footer-column ul { list-style: none; }
+        .footer-column ul li { margin-bottom: 10px; }
+        .footer-column ul li a {
+            color: var(--text-color-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer-column ul li a:hover { color: var(--accent-color); }
+        .copyright {
+            margin-top: 80px;
+            text-align: center;
+            color: var(--text-color-muted);
+            font-size: 0.9rem;
+        }
+
+        /* ========================================
+        АДАПТИВНОСТЬ (MOBILE)
+        ========================================
+        */
+        @media (max-width: 992px) {
+            .telegram-section .container, .about-content {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+            .about-image-wrapper { order: -1; }
+            .about-image { height: 500px; }
+            .gallery-item { width: 60vw; height: 50vh; }
+        }
+        
+        @media (max-width: 768px) {
+            .container { padding: 0 20px; }
+            
+            /* Стили для мобильной навигации */
+            .main-nav {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: var(--primary-color);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.4s ease, visibility 0.4s ease;
+                z-index: 999;
+            }
+
+            .main-nav.active {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .main-nav ul {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .main-nav ul li {
+                margin: 20px 0;
+                transform: translateY(20px);
+                opacity: 0;
+                transition: transform 0.4s ease, opacity 0.4s ease;
+            }
+            .main-nav.active ul li {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            /* Добавляем задержку для каждого элемента списка */
+            .main-nav.active ul li:nth-child(1) { transition-delay: 0.2s; }
+            .main-nav.active ul li:nth-child(2) { transition-delay: 0.3s; }
+            .main-nav.active ul li:nth-child(3) { transition-delay: 0.4s; }
+
+
+            .main-nav ul li a {
+                font-size: 2rem; /* Крупнее для мобильных */
+            }
+
+            .menu-toggle {
+                display: block; /* Показываем иконку-гамбургер */
+            }
+
+            .section { padding: 80px 0; }
+            .footer-content { flex-direction: column; }
+            .gallery-item { width: 80vw; height: 60vh; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Контейнер для анимированного фона -->
+    <div id="particles-js"></div>
+
+    <!-- Шапка сайта -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo magnetic-item"><i class="fas fa-spa"></i>АКАДЕМИЯ КРАСОТЫ</a>
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="#" class="magnetic-item">Главная</a></li>
+                        <li><a href="#telegram" class="magnetic-item">Каталог</a></li>
+                        <li><a href="#about" class="magnetic-item">О нас</a></li>
+                    </ul>
+                </nav>
+                <button class="menu-toggle magnetic-item" aria-label="Открыть меню">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main id="smooth-scroll-content">
+        <!-- Главный экран -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>
+                        <span class="line"><span class="word">Искусство</span></span>
+                        <span class="line"><span class="word">в каждой</span></span>
+                        <span class="line"><span class="word">детали</span></span>
+                    </h1>
+                    <div class="hero-description">
+                        <p>Откройте для себя мир профессиональной косметики и передового оборудования. Мы создаем идеальные решения для вашего бизнеса.</p>
+                        <a href="#telegram" class="cta-button magnetic-item">Смотреть каталог</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Секция Telegram -->
+        <section id="telegram" class="section telegram-section">
+            <div class="container">
+                <div class="telegram-image-wrapper reveal">
+                    <img src="https://images.unsplash.com/photo-1596701062351-8c2c14d1fdd0?q=80&w=1887&auto=format&fit=crop" alt="Стильная косметика" class="telegram-image" onerror="this.onerror=null;this.src='https://placehold.co/800x1200/141414/bda070?text=Стиль';">
+                </div>
+                <div class="telegram-content reveal">
+                    <h3>Полный Каталог в Telegram</h3>
+                    <p>Все новинки, эксклюзивные акции и профессиональные советы от наших экспертов доступны в официальном Telegram канале. Присоединяйтесь к сообществу профессионалов!</p>
+                    <a href="https://t.me/akademiya_krasoty" target="_blank" class="cta-button magnetic-item">
+                        Перейти в канал
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Секция Галереи -->
+        <section id="gallery" class="section gallery-section">
+            <div class="gallery-wrapper">
+                <div class="gallery-horizontal">
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?q=80&w=2070&auto=format&fit=crop" alt="Интерьер салона красоты" onerror="this.onerror=null;this.src='https://placehold.co/800x1200/141414/e5e5e5?text=Дизайн';">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=1887&auto=format&fit=crop" alt="Профессиональная косметика" onerror="this.onerror=null;this.src='https://placehold.co/800x1200/141414/bda070?text=Косметика';">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1556228852-6d45a7d8e4e0?q=80&w=1887&auto=format&fit=crop" alt="Инновационное оборудование" onerror="this.onerror=null;this.src='https://placehold.co/800x1200/141414/e5e5e5?text=Инновации';">
+                    </div>
+                     <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1600948332360-6b3a332219de?q=80&w=1887&auto=format&fit=crop" alt="Внимание к деталям" onerror="this.onerror=null;this.src='https://placehold.co/800x1200/141414/bda070?text=Детали';">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Секция О Нас -->
+        <section id="about" class="section">
+            <div class="container">
+                <div class="about-content">
+                    <div class="about-text">
+                        <h2 class="section-title reveal">О Нас</h2>
+                        <p class="reveal"><strong>"Академия Красоты"</strong> является ведущим поставщиком для индустрии красоты. Мы не просто продаем продукцию — мы строим партнерские отношения, предлагая только <strong>проверенные и эффективные решения</strong> от мировых брендов.</p>
+                        <p class="reveal">Наша миссия — вдохновлять мастеров на новые высоты, предоставляя им лучшие инструменты и знания. Мы гордимся тем, что нам доверяют лучшие салоны по всей стране.</p>
+                    </div>
+                    <div class="about-image-wrapper reveal">
+                        <img src="https://images.unsplash.com/photo-1552693673-1bf958298935?q=80&w=1974&auto=format&fit=crop" alt="Команда Академии Красоты" class="about-image" onerror="this.onerror=null;this.src='https://placehold.co/800x1200/141414/666666?text=О+Нас';">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Подвал -->
+    <footer id="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Академия Красоты</h3>
+                    <p>© 2025. Ваш надежный партнер.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Навигация</h3>
+                    <ul>
+                        <li><a href="#" class="magnetic-item">Главная</a></li>
+                        <li><a href="#telegram" class="magnetic-item">Каталог</a></li>
+                        <li><a href="#about" class="magnetic-item">О нас</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Контакты</h3>
+                    <ul>
+                        <li><a href="#" class="magnetic-item">Москва, ул. Красоты, 15</a></li>
+                        <li><a href="tel:+74951234567" class="magnetic-item">+7 (495) 123-45-67</a></li>
+                        <li><a href="mailto:info@akademiya-krasoty.ru" class="magnetic-item">info@akademiya-krasoty.ru</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>Дизайн, который вдохновляет.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Подключение GSAP для анимаций -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+    <!-- Подключение библиотеки particles.js для анимированного фона -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <script>
+    // Регистрация плагинов GSAP
+    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+    // Запускаем скрипт после загрузки DOM
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        const menuToggle = document.querySelector('.menu-toggle');
+        const mainNav = document.querySelector('.main-nav');
+
+        // Инициализация particles.js для анимированного фона
+        particlesJS('particles-js', {
+            "particles": {
+                "number": {"value": 60, "density": {"enable": true, "value_area": 800}},
+                "color": {"value": "#bda070"},
+                "shape": {"type": "circle"},
+                "opacity": {"value": 0.3, "random": true},
+                "size": {"value": 2, "random": true},
+                "line_linked": {"enable": true, "distance": 150, "color": "#666666", "opacity": 0.2, "width": 1},
+                "move": {"enable": true, "speed": 1, "direction": "none", "random": true, "straight": false, "out_mode": "out"}
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {"onhover": {"enable": true, "mode": "grab"}, "onclick": {"enable": false}, "resize": true},
+                "modes": {"grab": {"distance": 140, "line_linked": {"opacity": 0.5}}}
+            },
+            "retina_detect": true
+        });
+
+        // Анимация появления сайта
+        const masterTl = gsap.timeline();
+        masterTl
+            .to('body', { opacity: 1, duration: 0.5, ease: 'power1.inOut' })
+            .to('header', { y: 0, duration: 1, ease: 'power3.out' }, '-=0.2')
+            .to('.hero .line .word', { y: 0, duration: 1, ease: 'power3.out', stagger: 0.1 }, '-=0.8')
+            .to('.hero-description', { opacity: 1, duration: 1, ease: 'power3.out' }, '-=0.5');
+
+        // Инициализация остальных скриптов
+        initScrollAnimations();
+        initInteractiveElements();
+        initMobileMenu();
+
+        // Анимации при скролле
+        function initScrollAnimations() {
+            // Анимация появления элементов
+            gsap.utils.toArray('.reveal').forEach(el => {
+                gsap.fromTo(el, 
+                    { opacity: 0, y: 50 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 1.2,
+                        ease: 'power3.out',
+                        scrollTrigger: {
+                            trigger: el,
+                            start: 'top 85%',
+                            toggleActions: 'play none none none'
+                        }
+                    }
+                );
+            });
+
+            // Горизонтальный скролл для галереи
+            const galleryWrapper = document.querySelector('.gallery-wrapper');
+            const gallery = document.querySelector('.gallery-horizontal');
+            if (galleryWrapper && gallery) {
+                gsap.to(gallery, {
+                    x: () => - (gallery.scrollWidth - gallery.clientWidth),
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: galleryWrapper,
+                        start: "top top",
+                        end: () => `+=${gallery.scrollWidth - gallery.clientWidth}`,
+                        pin: true,
+                        scrub: 1,
+                        invalidateOnRefresh: true
+                    }
+                });
+            }
+        }
+
+        // Интерактивные элементы
+        function initInteractiveElements() {
+            // Магнитные элементы
+            gsap.utils.toArray('.magnetic-item').forEach(item => {
+                item.addEventListener('mousemove', (e) => {
+                    const pos = item.getBoundingClientRect();
+                    const x = e.clientX - pos.left - pos.width / 2;
+                    const y = e.clientY - pos.top - pos.height / 2;
+                    gsap.to(item, {
+                        x: x * 0.2,
+                        y: y * 0.4,
+                        duration: 0.8,
+                        ease: 'power3.out'
+                    });
+                });
+                item.addEventListener('mouseleave', () => {
+                    gsap.to(item, {
+                        x: 0,
+                        y: 0,
+                        duration: 0.8,
+                        ease: 'elastic.out(1, 0.3)'
+                    });
+                });
+            });
+
+            // Плавная прокрутка
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    const targetId = this.getAttribute('href');
+                    if(targetId.length > 1) {
+                        e.preventDefault();
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                            gsap.to(window, {
+                                duration: 1.5,
+                                scrollTo: {
+                                    y: targetElement,
+                                    offsetY: 80
+                                },
+                                ease: 'power3.inOut'
+                            });
+                        }
+                    }
+                });
+            });
+            
+            // Эффект для кнопок
+            document.querySelectorAll('.cta-button').forEach(button => {
+                if (!button.href.includes('t.me')) {
+                    const bg = document.createElement('div');
+                    bg.style.position = 'absolute';
+                    bg.style.top = '0';
+                    bg.style.left = '0';
+                    bg.style.width = '100%';
+                    bg.style.height = '100%';
+                    bg.style.backgroundColor = 'var(--accent-color)';
+                    bg.style.zIndex = '-1';
+                    bg.style.transform = 'scaleY(0)';
+                    bg.style.transformOrigin = 'bottom';
+                    bg.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                    button.appendChild(bg);
+                    button.addEventListener('mouseenter', () => { bg.style.transform = 'scaleY(1)'; });
+                    button.addEventListener('mouseleave', () => { bg.style.transform = 'scaleY(0)'; });
+                }
+            });
+        }
+        
+        // Логика мобильного меню
+        function initMobileMenu() {
+            if (menuToggle && mainNav) {
+                menuToggle.addEventListener('click', () => {
+                    mainNav.classList.toggle('active');
+                    menuToggle.querySelector('i').classList.toggle('fa-bars');
+                    menuToggle.querySelector('i').classList.toggle('fa-times');
+                });
+                mainNav.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        if (mainNav.classList.contains('active')) {
+                            mainNav.classList.remove('active');
+                            menuToggle.querySelector('i').classList.remove('fa-times');
+                            menuToggle.querySelector('i').classList.add('fa-bars');
+                        }
+                    });
+                });
+            }
+        }
+    });
+    </script>
+</body>
+</html>
